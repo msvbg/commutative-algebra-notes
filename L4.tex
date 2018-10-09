@@ -1,0 +1,169 @@
+\documentclass{./template}
+\usepackage{stmaryrd}
+
+\title{Commutative Algebra and Algebraic Geometry --- Lecture 4}
+\author{Martin Svanberg}
+
+\newcommand{\Lead}{\textrm{Lead }}
+\newcommand{\Tor}{\textrm{Tor}}
+\newcommand{\Ker}{\textrm{Ker}}
+\newcommand{\Img}{\textrm{Im}}
+\newcommand{\Hom}{\textrm{Hom}}
+\newcommand{\coker}{\textrm{coker}}
+\newcommand{\Q}{\mathbb Q}
+\newcommand{\Ob}{\text{Ob}~}
+\newcommand{\Mor}{\text{Mor}~}
+\newcommand{\ca}{\mathcal}
+\newcommand{\vp}{\varphi}
+
+\usetikzlibrary{decorations.pathmorphing}
+
+\newcommand\xrsquigarrow[1]{%
+    \mathrel{%
+        \begin{tikzpicture}[%
+            baseline={(current bounding box.south)}
+            ]
+        \node[%
+            ,inner sep=.44ex
+            ,align=center
+            ] (tmp) {$\scriptstyle #1$};
+        \path[%
+            ,draw,<-
+            ,decorate,decoration={%
+                ,zigzag
+                ,amplitude=0.7pt
+                ,segment length=1.2mm,pre length=3.5pt
+                }
+            ] 
+        (tmp.south east) -- (tmp.south west);
+        \end{tikzpicture}
+        }
+    }
+
+\begin{document}
+  \maketitle
+
+  \section{Loose ends}
+
+  Is $\Hom(M,N)$ an $R$-module? Only if $R$ commutative.
+
+  {\ex  $R=F$ and $M=V$, a finite dimensional vector space, $N=W$. Look at $\Hom(V,W)$, a vector space of dimension $\dim(V)\dim(W)$. If $b_1,\ldots,b_m$ is a basis for $V$, $c_1,\ldots,c_n$ basis for $W$. Then $V\cong F^n, W\cong F^m$ and $\Hom(F^n,F^m)$ is the set of $m\times n$ matrices.}
+
+  {\ex  $R=F[G]$ and $F$ a field, $G$ a finite group. "Group ring" or "group algebra", an example of noncommutative rings. If $G$ acts on a set, then $G$ also acts on $\text{Functions(X,F)}$.
+
+  If you define the action as $(g\cdot f)(x)=f(gx)$ then it fails, but $(g\cdot f)(x^{-1})$ does work. So $\text{Functions}(X,F)$ is a vector space and a $G$-module, but this we cannot do for general rings.
+  }
+
+  \section{~}
+  Observe: in finite dimensional vector spaces, a maximal linearly independent set is a basis. This is not true for modules. Linear independence is defined as before, but a maximally linearly independent set might not be a basis. For example, $(1)$ is a maximal linearly independent set of $Z$-module, but so is $(2)$. It is free of rank 1 (cyclic), but it is not a generating set.
+
+  Consider $\Z^n \xrightarrow A \Z^n$, where $A\in M_n(\Z)$. $\Img(A)$ is a submodule of $\Z^n$. Assume $\det A \neq 0$. Equivalent to $\Img A$ being a finite index in $\Z^n$. Then $\abs{\Z^n/\Img(A)} = \abs{\det A}$ 
+  
+
+  There is also $\Q^n \xrightarrow A \Q^n$, isomorphism when $\det A$ nonzero. Then $\abs{\det A}=1$.
+
+  {\defn The rank of an $R$-module $M$ is the size of a maximally linearly independent set in $M$.}
+
+  \section{Injective and projective modules}
+  The basic test: short exact sequences. $0 \to M' \xrightarrow f M \xrightarrow {g-} M'' \to 0$. So $M/M' \cong M''$ by the first isomorphism theorem.
+
+  Then we looked at $\Hom(L, \_)$ and $\Hom(\_, L)$. 
+
+  Relating to surjectivity: $o\to \Hom(L, M')\to \Hom(L,M) \to \Hom(L,M'')$ does it go to zero? ($\ldots\to 0$? )
+
+  Relating to injectivity: $0 \leftarrow \Hom(M', L) \leftarrow \Hom(M,L) \leftarrow \Hom(M'',L)$ ($0 \leftarrow \ldots$?)
+
+  Projective if $\Hom(L,*)$ is exact for all short exact sequences $*$. Injective if $\Hom(*,L)$ is exact for all short exact sequences $*$.
+
+  {\lemma Link between projective and free. $L$ is projective iff $L$ is a direct factor of a free module. i.e., there exists $M$ free and $N$ such that $M=N\oplus L$. Corollary, free implies projective. Other corollary, every module is a quotient of projective module. This last corollary is what people mean when they say that the category of $R$-modules has enough projectives.}
+
+  There is not an equally nice relationship for injectivity, even though injectivity is dual to projectivity.
+
+  \newpage
+  \section{Categories}
+  A category $\mathcal C$ is a pair $(\Ob \mathcal C, \Mor \mathcal C)$. $\Ob \mathcal C$ class of objects, $\Mor\mathcal C$ class of sets of morphisms: $\Hom_{\mathcal C}(A,B)$ where $A,B\in\Ob\mathcal C$.
+
+  $\Hom(*,*)$ are sets, and composition is $\Hom(A,B)\times\Hom(B,C)\to \Hom(A,C)$.
+
+  We have:
+  \li{
+    Composition is associative.
+  }
+  \lii{
+    If $A\neq C$ or $B\neq D$ then $\Hom(A,B) \cap \Hom(C,D) \neq \emptyset$.
+  }
+  \liii{
+    For all $A$, there exists an identity morphism $1_A \in \Hom(A,A)$ such that $f\cdot 1_A=f$ and $1_A\cdot g = g$, that is $\underbrace{\Hom(A,A)}_{1_A}\times\underbrace{\Hom(A,B)}_g \to \Hom(A,B)$. Also, $\Hom(C,A)\times\Hom(A,A)\to \Hom(C,A)$.
+  }
+
+  For groups, objects are groups and morphisms are group homomorphisms. For modules, objects are all $R$-modules and morphisms are all $R$-linear maps $\Hom(M,N)$.
+
+  \section{Functors}
+  A (covariant) functor $\mathcal F$ from one category $\mathcal C$ to another category $\mathcal D$ is an object that associates to each $A\in\Ob \mathcal C$ a $\mathcal F(A)\in \Ob\mathcal D$. To morphisms $f$ it associates $\mathcal F(f) \in \Hom(\mathcal F(A), \mathcal F(B))$, a morphism in the category $\mathcal D$.
+
+  We require
+  \li{$\mathcal F(fg)=\mathcal F(f)\mathcal F(g)$ for $f\in\Hom(A,B), g\in\Hom(B,C)$}
+
+  \lii{$\mathcal(1_A)=1_{\mathcal F(A)}$ for all $A\in \Ob\mathcal C$}
+
+  $\mathcal F$ is a contravariant functor from $\mathcal C$ to $\mathcal D$ if $f\mapsto \mathcal F(f)$ where $f\in \Hom_{\ca C}(A,B)$ and $\mathcal F(f)\in \Hom_{\ca D}(\ca F(B), \ca F (A))$ and $\ca F(fg) = \ca F(g)\ca F(f)$.
+
+  Afine algebraic sets form a category with morphisms of algebraic sets.
+
+  Finitely generated $k$-algebras form a category with morphisms of $k$-algebras.
+
+  If $V,W$ be affine algebraic sets. Then the functor $V\mapsto k[V]$ and $(\vp : V \to W) \mapsto k[W] \xrightarrow {\vp^*} k[V]$
+
+  \begin{center}
+  \begin{tikzcd}
+    V \arrow[rd] \arrow[r, "\varphi"] & W \arrow[d, "f"] \\
+     & k
+    \end{tikzcd}
+  \end{center}
+  
+  This is a contravariant functor.
+
+  \hrulefill
+
+  The category of $R$-modules are abelian categories. What can we do in abelian categories Ab?
+
+  We can take kernels. If $f : A \to B$ where $A,B\in $ Ab. (We write this instead of writing Ob). Then Ker $f$ $\in $ Ab. And Im $f \in $ Ab. And Coker $f=B/$Im $f\in $ Ab. But this doesn't work in Grp, the category of groups, since we require the image to be normal in that case.
+
+  We can do direct sums. If $A,B$ are abelian groups, then their direct sum is also an abelian group. Same goes for abelian categories.
+
+  $\Hom(A,B)$ is itself an abelian group for $A,B \in $ Ab. Again, doesn't work in the category Grp.
+
+  So, if we can take Ker, Im, Coker, Coim, can take direct sums and $\Hom$ is an abelian group, then we have an abelian category.
+
+  Observe: Categories need not deal with sets. This complicates the actual definition, but we will not bother with that.
+
+  {\ex $R$-modules are abelian categories. Grp is not abelian category. }
+
+
+  \section{Morita Equivalence}
+  {\defn Two rings are Morita equivalent if the categories $R$-mod and $S$-mod are equivalent as categories.}
+
+  {\defn $\ca C,\ca D$ are isomorphic if there exists $\ca F :\ca C \to \ca D$ and $\ca H : \ca D \to \ca C$ such that $\ca F \circ \ca H = 1_{\ca D}$ and $\ca M \circ \ca F = 1_{\ca C}$.
+
+  (Infinity categories: lol. Morphisms between morphisms between morphisms $\ldots$ between functors)
+
+  {\ex Let $R$ be any commutative ring with 1 and let $S=M_n(R)$. Highly noncommutative. We still have the categories of left/right $R$-modules. $R,S$ are Morita equivalent.}
+
+  {\defn A natural transformation $\eta : \ca F \to \ca H$ between two covariant functors $\ca F, \ca H : \ca C \to \ca D$ a rule that associates to every $A\in \ca C$ a $\eta_A \in \Hom(\ca F A, \ca H A)$, for all $(A,B)\ \in \Ob \ca C$ and for all $f \in \Hom_{\ca C}(A,B)$ such that}
+
+  \begin{center}
+  \begin{tikzcd}
+    \mathcal F(A) \arrow[d, "\mathcal F(f)"] \arrow[r, "\eta_A"] & \mathcal H(A) \arrow[d, "\mathcal H(f)"] \\
+    \mathcal F(B) \arrow[r, "\eta_B"] & \mathcal H(B)
+    \end{tikzcd}
+  \end{center}
+
+    commutes.
+
+  {\defn Categories $\ca C, \ca D$ are equivalent if there exists $\ca F : \ca C \to \ca D$ and $G : \ca D \to \ca C$ such that $\ca F \circ \ca G$ and $\ca G \circ \ca F$ are each naturally isomoprhic to the identity functor. i.e. there exists a natural transformation $\eta : \ca F \circ \ca G \to 1_{\ca D}$ with an inverse.}
+
+
+
+
+
+\end{document}
